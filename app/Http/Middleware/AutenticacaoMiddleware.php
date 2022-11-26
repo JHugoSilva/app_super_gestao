@@ -2,11 +2,10 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\LogAcesso;
 use Closure;
 use Illuminate\Http\Request;
 
-class LogAcessoMiddleware
+class AutenticacaoMiddleware
 {
     /**
      * Handle an incoming request.
@@ -17,10 +16,9 @@ class LogAcessoMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $ip = $request->server->get('REMOTE_ADDR');
-        $rota = $request->getRequestUri();
-
-        LogAcesso::create(['log' => "Ip: $ip, Rota: $rota"]);
-        return $next($request);
+        if ($request->session()->has('nome') && $request->session()->has('email')) {
+            return $next($request);
+        }
+        return redirect()->route('site.login', ['erro' => 2]);
     }
 }
