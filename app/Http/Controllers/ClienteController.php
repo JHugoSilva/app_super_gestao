@@ -10,6 +10,6 @@ class ClienteController extends Controller
     {
         $titulo = 'Cliente';
 
-        return view('app.cliente', compact('titulo'));
+        return view('app.cliente.index', compact('titulo'));
     }
 }
